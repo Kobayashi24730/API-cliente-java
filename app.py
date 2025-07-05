@@ -14,7 +14,8 @@ jwt = JWTManager(app)
 
 @app.before_first_request
 def create_tables():
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -46,5 +47,6 @@ def profile():
     user = get_jwt_identity()
     return jsonify({"msg": f"Bem-vindo, {user}!"})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ != '__main__':
+    with app.app_context():
+        db.create_all()
