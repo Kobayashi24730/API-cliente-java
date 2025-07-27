@@ -24,7 +24,7 @@ def get_dados():
 @app.route("/dados", methods=["POST"])
 def add_dados():
 	if request.headers.get("Authorization") != f"Bearer {TOKEN}":
-		about(401,"Token invalido")
+		abort(401,"Token invalido")
 	
 	data = request.get_json()
 	nome = data.get("nome")
