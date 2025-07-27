@@ -1,4 +1,4 @@
-from flask import Flask, jnosify, request, abort
+from flask import Flask, jsonify, request, abort
 import psycopg2
 import os
 
