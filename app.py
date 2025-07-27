@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 TOKEN = "Meu token"
-DATABASE_URL = os.environ.get("postgresql://tarefaass")
+DATABASE_URL = os.environ.get("postgresql://tarefasdb_vg63_user:O8or5d4yGRWcIlDKkiLOMT8ms3NKs8Py@dpg-d1ht9a3ipnbc73fmf050-a.oregon-postgres.render.com/tarefasdb_vg63")
 
 def conectar():
 	return psycopg2.cennect(DATABASE_URL)
