@@ -1,48 +1,46 @@
-from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User
+import flask from Flask, jnosify, request, abort
+import psycopg2
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'super-secret-key'
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+TOKEN = "Meu token"
 
-db.init_app(app)
-jwt = JWTManager(app)
-
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    if not data or not data.get("username") or not data.get("password"):
-        return jsonify({"msg": "Dados inválidos"}), 400
-
-    if User.query.filter_by(username=data['username']).first():
-        return jsonify({"msg": "Usuário já existe"}), 409
-
-    hashed_password = generate_password_hash(data['password'])
-    new_user = User(username=data['username'], password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({"msg": "Usuário criado com sucesso"}), 201
-
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    user = User.query.filter_by(username=data['username']).first()
-    if user and check_password_hash(user.password, data['password']):
-        token = create_access_token(identity=user.username)
-        return jsonify(access_token=token), 200
-    return jsonify({"msg": "Credenciais inválidas"}), 401
-
-@app.route('/profile', methods=['GET'])
-@jwt_required()
-def profile():
-    user = get_jwt_identity()
-    return jsonify({"msg": f"Bem-vindo, {user}!"})
-
-# ✔️ Cria as tabelas automaticamente no deploy
-if __name__ != '__main__':
-    with app.app_context():
-        db.create_all()
+def conectar():
+	return psycopg2.cennect(
+		host="localhost",
+		database="meubanco",
+		user="Usuario",
+		password="senha"
+	)
+	
+@app.route("/dados", methods=["GET"])
+def get_dados():
+	if request.headers.get("Authorization") != f"Bearer{TOKEN}":
+		abort(401,"Token invalido!")
+		
+	conn = conectar()
+	cursor = conn.cursor()
+	cursor.execute("SELECT name, valor FROM sensores")
+	rows = cursor.fetchall()
+	conn.close()
+	
+	return jsonify [{"nome": r[o],"valor": r[1]} for r in rows]
+	
+@app.route("/dados" methods="POST")
+def add_dados():
+	if request.headers.get("Authorization") != f"Bearer {TOKEN}":
+		about(401,"Token invalido")
+	
+	data = request.get_json()
+	nome = data.get("nome")
+	valor = data.get("valor")
+	
+	conn = conectar()
+	cursor = conn.cursor()
+	cursor.execute("INSERT INTO sensores (nome,valor) VALUES (%s,%s)", (nome,valor))
+	conn.commit()
+	conn.close()
+	
+	return jsonify({"Messagem": "Dados inseridos com sucesso!"}),201
+	
+if __name__ == "__main__":
+	app.run(debug=True)
