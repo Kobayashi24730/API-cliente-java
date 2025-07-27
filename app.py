@@ -1,16 +1,13 @@
 import flask from Flask, jnosify, request, abort
 import psycopg2
+import os
 
 app = Flask(__name__)
 TOKEN = "Meu token"
+DATABASE_URL = os.environ.get("postgresql://tarefaass")
 
 def conectar():
-	return psycopg2.cennect(
-		host="localhost",
-		database="meubanco",
-		user="Usuario",
-		password="senha"
-	)
+	return psycopg2.cennect(DATABASE_URL)
 	
 @app.route("/dados", methods=["GET"])
 def get_dados():
