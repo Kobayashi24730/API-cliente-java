@@ -13,12 +13,12 @@ def criar_tabela():
 	conn = conectar()
 	cursor = conn.cursor()
 	cursor.execute('''
-					CREATE TABLE IF NOT EXISTS sensores(
-							id SERIAL PRIMARY KEY,
-							nome TEXT NOT NULL,
-							valor TEXT NOT NULL
-						)
-					)
+                          CREATE TABLE IF NOT EXISTS sensores(
+			     id SERIAL PRIMARY KEY,
+			     nome TEXT NOT NULL,
+			     valor TEXT NOT NULL
+		            )
+			''')
 	conn.commit()
 	conn.close()
 
