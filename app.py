@@ -7,7 +7,7 @@ TOKEN = "Meu token"
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def conectar():
-	return psycopg2.cennect(DATABASE_URL)
+	return psycopg2.connect(DATABASE_URL)
 
 def criar_tabela():
 	conn = conectar()
