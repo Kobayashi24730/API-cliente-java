@@ -21,7 +21,7 @@ def get_dados():
 	
 	return jsonify ([{"nome": r[o],"valor": r[1]} for r in rows])
 	
-@app.route("/dados" methods=["POST"])
+@app.route("/dados", methods=["POST"])
 def add_dados():
 	if request.headers.get("Authorization") != f"Bearer {TOKEN}":
 		about(401,"Token invalido")
