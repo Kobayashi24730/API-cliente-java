@@ -5,9 +5,25 @@ import os
 app = Flask(__name__)
 TOKEN = "Meu token"
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
 def conectar():
 	return psycopg2.cennect(DATABASE_URL)
-	
+
+def criar_tabela():
+	conn = conectar()
+	cursor = conn.cursor()
+	cursor.execute('''
+					CREATE TABLE IF NOT EXISTS sensores(
+							id SERIAL PRIMARY KEY,
+							nome TEXT NOT NULL,
+							valor TEXT NOT NULL
+						)
+					)
+	conn.commit()
+	conn.close()
+
+criar_tabela()
+
 @app.route("/dados", methods=["GET"])
 def get_dados():
 	if request.headers.get("Authorization") != f"Bearer{TOKEN}":
