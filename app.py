@@ -3,7 +3,7 @@ import psycopg2
 import os
 
 app = Flask(__name__)
-TOKEN = "Meu token"
+TOKEN = "Meu_token"
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def conectar():
