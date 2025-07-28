@@ -3,7 +3,6 @@ import psycopg2
 import os
 
 app = Flask(__name__)
-TOKEN = "Meu_token"
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def conectar():
@@ -40,10 +39,7 @@ iniciar_dados_iniciais()
 criar_tabela()
 
 @app.route("/dados", methods=["GET"])
-def get_dados():
-	if request.headers.get("Authorization") != f"Bearer{TOKEN}":
-		abort(401,"Token invalido!")
-		
+def get_dados():		
 	conn = conectar()
 	cursor = conn.cursor()
 	cursor.execute("SELECT name, valor FROM sensores")
@@ -54,9 +50,6 @@ def get_dados():
 	
 @app.route("/dados", methods=["POST"])
 def add_dados():
-	if request.headers.get("Authorization") != f"Bearer {TOKEN}":
-		abort(401,"Token invalido")
-	
 	data = request.get_json()
 	nome = data.get("nome")
 	valor = data.get("valor")
