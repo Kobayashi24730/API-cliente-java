@@ -23,6 +23,11 @@ def criar_tabela():
 	conn.close()
 
 def iniciar_dados_iniciais():
+	dados = [
+			("Água A1","7.2"),
+			("Água B1","8.2"),
+			("Água C1","6.2")
+  ]
 	conn = conectar()
 	cursor = conn.cursor()
 	for nome,valor in dados:
