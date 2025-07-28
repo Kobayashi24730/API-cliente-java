@@ -32,7 +32,7 @@ def iniciar_dados_iniciais():
 	cursor = conn.cursor()
 	for nome,valor in dados:
 		cursor.execute("INSERT INTO sensores (nome,valor) VALUES (%s,%s)", (nome,valor))
-	conn.commmit()
+	conn.commit()
 	conn.close()
 
 # inicialização tantos dos dados iniciais quanto do db
