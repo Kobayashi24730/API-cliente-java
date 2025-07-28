@@ -42,7 +42,7 @@ criar_tabela()
 def get_dados():		
 	conn = conectar()
 	cursor = conn.cursor()
-	cursor.execute("SELECT name, valor FROM sensores")
+	cursor.execute("SELECT nome, valor FROM sensores")
 	rows = cursor.fetchall()
 	conn.close()
 	
