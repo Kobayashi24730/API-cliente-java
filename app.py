@@ -46,7 +46,7 @@ def get_dados():
 	rows = cursor.fetchall()
 	conn.close()
 	
-	return jsonify ([{"nome": r[o],"valor": r[1]} for r in rows])
+	return jsonify ([{"nome": r[0],"valor": r[1]} for r in rows])
 	
 @app.route("/dados", methods=["POST"])
 def add_dados():
